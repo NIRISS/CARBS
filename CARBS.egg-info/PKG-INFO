@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: CARBS
+Version: 0.0.1
+Summary: CANUCS Adaptive Resolved Bayesian SED-Fitting
+Home-page: https://github.com/NIRISS/CARBS
+Author: CANUCS team
+Author-email: kartheik.iyer@dunlap.utoronto.ca
+License: UNKNOWN
+Description: # CARBS
+        CANUCS Adaptive Resolved Bayesian SED-Fitting: full spectrophotometric modeling using grizli and Dense Basis
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
