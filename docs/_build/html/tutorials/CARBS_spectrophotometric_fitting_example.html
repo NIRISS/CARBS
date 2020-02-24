@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Basic routine for dense_basis + grizli spectrophotometric fitting. &mdash; CARBS 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Installation" href="setting_up.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CARBS
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setting_up.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting_up.html#Dependencies">Dependencies</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic routine for dense_basis + grizli spectrophotometric fitting.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#What-is-CARBS?">What is <code class="docutils literal notranslate"><span class="pre">CARBS</span></code>?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Upcoming-:">Upcoming :</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#What-do-you-need-to-get-started?">What do you need to get started?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Getting-the-data:">Getting the data:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Some-setup-before-fitting:">Some setup before fitting:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#All-right,-now-we’re-ready-to-do-the-joint-grism+photometry-fitting!">All right, now we’re ready to do the joint grism+photometry fitting!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#Plotting-all-the-posteriors-and-fits:">Plotting all the posteriors and fits:</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CARBS</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Basic routine for dense_basis + grizli spectrophotometric fitting.</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/CARBS_spectrophotometric_fitting_example.ipynb" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Basic-routine-for-dense_basis-+-grizli-spectrophotometric-fitting.">
+<h1>Basic routine for dense_basis + grizli spectrophotometric fitting.<a class="headerlink" href="#Basic-routine-for-dense_basis-+-grizli-spectrophotometric-fitting." title="Permalink to this headline">¶</a></h1>
+<div class="section" id="What-is-CARBS?">
+<h2>What is <code class="docutils literal notranslate"><span class="pre">CARBS</span></code>?<a class="headerlink" href="#What-is-CARBS?" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CARBS</span></code> stands for CANUCS Adaptive Resolved Bayesian SED-Fitting, and is a package for performing full spectrophotometric modeling and fitting using the grizli and Dense Basis codes. The Dense Basis code can be found <a class="reference external" href="https://dense-basis.readthedocs.io/en/latest/">here</a>, and grizli can be found <a class="reference external" href="https://grizli.readthedocs.io/en/master/">here</a>.</p>
+<p>This is the core of a package to extract the physical properties of galaxies (stellar masses, star formation rates and histories, dust content, chemical enrichment and redshift) utilizing all possible spectral information available. The current code is capable of simultaneously fitting 3D-HST grism + photometry to extract physical parameters including star formation histories with uncertainties.</p>
+</div>
+<div class="section" id="Upcoming-:">
+<h2>Upcoming :<a class="headerlink" href="#Upcoming-:" title="Permalink to this headline">¶</a></h2>
+<p>Documentation will be available at <a class="reference external" href="https://carbs.readthedocs.io">carbs.readthedocs.io</a>, and this will be updated from the base wrappers it currently is to be a standalone package.</p>
+<p>If you are interested in using or contributing to the project, please email me at <a class="reference external" href="mailto:kartheik&#46;iyer&#37;&#52;&#48;dunlap&#46;utoronto&#46;ca">kartheik<span>&#46;</span>iyer<span>&#64;</span>dunlap<span>&#46;</span>utoronto<span>&#46;</span>ca</a></p>
+</div>
+<div class="section" id="What-do-you-need-to-get-started?">
+<h2>What do you need to get started?<a class="headerlink" href="#What-do-you-need-to-get-started?" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Clone this repo using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/NIRISS/CARBS.git</span></code> and navigate into the base folder with <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">CARBS</span></code>. Also get the base packages (dense_basis and grizli) and their requirements.</p></li>
+<li><p>The dense_basis package provides the functionality to create smooth, non-parametric Gaussian process based star formation histories, and run them through FSPS to get corresponding spectral energy distributions. Grizli provides an interface to forward model 2d grism images and compute goodness-of-fit statistics to extract information about the physical parameters of observed galaxies.</p></li>
+<li><p>Both grizli and python-fsps (which is a dependency for dense_basis) also have some environmental variables that need to be set in the .bashrc or .cshrc files.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">db_grizli_photspec.py</span></code> file contains most of the functions needed to get us up and running, building on top of both the dense_basis and grizli packages. This is what we are going to import and use in this notebook. Since it is not a full package currently, please make sure that you are working in the directory that contains this file. .</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">CARBS</span> <span class="k">as</span> <span class="nn">carbs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting dense_basis. please wait ~ a minute for the FSPS backend to initialize.
+Initialized stellar population with FSPS.
+</pre></div></div>
+</div>
+<div class="section" id="Getting-the-data:">
+<h3>Getting the data:<a class="headerlink" href="#Getting-the-data:" title="Permalink to this headline">¶</a></h3>
+<p>To access the database, create a text file containing the username, password, and database name on separate lines, and read it in using <code class="docutils literal notranslate"><span class="pre">carbs.import_AWS_credentials()</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">db_name</span><span class="p">,</span> <span class="n">db_word</span><span class="p">,</span> <span class="n">db_base</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">import_AWS_credentials</span><span class="p">(</span><span class="s1">&#39;../../CARBS/credentials.txt&#39;</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">load_grizli_database</span><span class="p">(</span><span class="n">db_name</span><span class="p">,</span> <span class="n">db_word</span><span class="p">,</span> <span class="n">db_base</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We currently use the 3D-HST GOODS-South catalog (Skelton+14, Brammer+12) to find galaxies with matched spectrophotometry. If you don’t have these files, or would like to use a different field, please download them from <a class="reference external" href="https://3dhst.research.yale.edu/Data.php">the 3D-HST data release page</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cat</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">import_phot_cat</span><span class="p">(</span><span class="n">phot_cat_path</span> <span class="o">=</span> <span class="s1">&#39;../../CARBS/catalogs/goodss_3dhst.v4.1.cat&#39;</span><span class="p">,</span>
+                            <span class="n">z_cat_path</span> <span class="o">=</span> <span class="s1">&#39;../../CARBS/catalogs/goodss_3dhst.v4.1.zout&#39;</span><span class="p">)</span>
+
+<span class="n">obs_id</span><span class="p">,</span> <span class="n">obs_sed</span><span class="p">,</span> <span class="n">obs_err</span><span class="p">,</span> <span class="n">sed_cat</span><span class="p">,</span> <span class="n">redshift_cat</span> <span class="o">=</span> <span class="n">cat</span>
+</pre></div>
+</div>
+</div>
+<p>Picking a redshift range, we now find galaxies that have grism matches in the database.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">good_ids</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">find_matched_obs</span><span class="p">(</span><span class="n">z_low</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">z_high</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                            <span class="n">redshift_cat</span> <span class="o">=</span> <span class="n">redshift_cat</span><span class="p">,</span> <span class="n">sed_cat</span> <span class="o">=</span> <span class="n">sed_cat</span><span class="p">,</span>
+                            <span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+# galaxies: 47
+match for i = 2, with N: 2
+gal_id: 6226, z_spec: 0.367
+match for i = 4, with N: 1
+gal_id: 7494, z_spec: 0.293
+match for i = 7, with N: 1
+gal_id: 9212, z_spec: 0.414
+match for i = 13, with N: 1
+gal_id: 11742, z_spec: 0.422
+match for i = 14, with N: 1
+gal_id: 13531, z_spec: 0.415
+match for i = 16, with N: 1
+gal_id: 13841, z_spec: 0.366
+match for i = 19, with N: 1
+gal_id: 15280, z_spec: 0.445
+match for i = 21, with N: 1
+gal_id: 15822, z_spec: 0.457
+match for i = 25, with N: 1
+gal_id: 17138, z_spec: 0.458
+match for i = 31, with N: 1
+gal_id: 19459, z_spec: 0.338
+match for i = 33, with N: 2
+gal_id: 19745, z_spec: 0.233
+match for i = 42, with N: 1
+gal_id: 26377, z_spec: 0.438
+match for i = 44, with N: 1
+gal_id: 26696, z_spec: 0.227
+</pre></div></div>
+</div>
+<p>we pick a galaxy for the current analysis, and load its grism observations into grizli’s <code class="docutils literal notranslate"><span class="pre">multibeam</span></code> object.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">mb</span><span class="p">,</span> <span class="n">z_grism</span><span class="p">,</span> <span class="n">gal_id</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">get_matched_multibeam</span><span class="p">(</span><span class="n">matched_id</span> <span class="o">=</span> <span class="mi">21</span><span class="p">,</span>
+                                          <span class="n">good_ids</span> <span class="o">=</span> <span class="n">good_ids</span><span class="p">,</span>
+                                          <span class="n">sed_cat</span> <span class="o">=</span> <span class="n">sed_cat</span><span class="p">,</span> <span class="n">redshift_cat</span> <span class="o">=</span> <span class="n">redshift_cat</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="n">filter_list</span> <span class="o">=</span> <span class="s1">&#39;filter_list_3dhst.dat&#39;</span>
+<span class="n">filt_dir</span> <span class="o">=</span> <span class="s1">&#39;../../CARBS/filters&#39;</span>
+
+<span class="n">galsed</span><span class="p">,</span> <span class="n">galerr</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">get_matched_phot</span><span class="p">(</span><span class="n">mb</span><span class="p">,</span> <span class="n">obs_sed</span><span class="p">,</span> <span class="n">obs_err</span><span class="p">,</span> <span class="n">gal_id</span><span class="p">,</span> <span class="n">z_grism</span><span class="p">,</span>
+                                  <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">,</span> <span class="n">filt_dir</span> <span class="o">=</span> <span class="n">filt_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+gal_id: 15822, z_spec: 0.457
+N:  1
+gds-grism-j033236m2748 24915
+Grism redshift: 0.4606
+load_master_fits: gds-grism-j033236m2748_24915.beams.fits
+1 ibhj04foq_flt.fits G141
+2 ibhj04fvq_flt.fits G141
+3 ibhj04gdq_flt.fits G141
+4 ibhj04glq_flt.fits G141
+</pre></div></div>
+</div>
+<p>Let’s quickly visualize how the observations look before moving to the fitting part.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">carbs</span><span class="o">.</span><span class="n">plot_matched_spectrophotometry</span><span class="p">(</span><span class="n">mb</span><span class="p">,</span> <span class="n">z_grism</span><span class="p">,</span> <span class="n">gal_id</span><span class="p">,</span> <span class="n">obs_sed</span><span class="p">,</span> <span class="n">obs_err</span><span class="p">,</span>
+                               <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">,</span>
+                               <span class="n">filt_dir</span> <span class="o">=</span> <span class="n">filt_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_CARBS_spectrophotometric_fitting_example_12_0.png" src="../_images/tutorials_CARBS_spectrophotometric_fitting_example_12_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Some-setup-before-fitting:">
+<h3>Some setup before fitting:<a class="headerlink" href="#Some-setup-before-fitting:" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pg_params</span></code> samples from the priors to provide starting points for the ensemble of MCMC walkers. Run the first time, this takes a few minutes since FSPS needs to load templates for each metallicity from disk the first time it is queried. You might see faster performance using an SSD, but even otherwise should start seeing a dramatic improvement once the progress bar crosses ~30.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fcs,</span> <span class="pre">fc_zgrid</span></code> spline the filter transmission curves to the FSPS wavelength range, for faster computation during the subsequent fit.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pg_params</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">get_pg_theta</span><span class="p">(</span><span class="n">z_grism</span><span class="p">,</span> <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">,</span> <span class="n">filt_dir</span> <span class="o">=</span> <span class="n">filt_dir</span><span class="p">)</span>
+
+<span class="n">temp_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.7</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="n">z_grism</span><span class="p">])</span>
+<span class="n">stelmass</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">galmass</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">spec</span><span class="p">,</span> <span class="n">wave</span><span class="p">,</span> <span class="n">stelmass</span><span class="p">,</span> <span class="n">galmass</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">spec_from_FSPS</span><span class="p">(</span><span class="n">temp_theta</span><span class="p">,</span> <span class="n">stelmass</span><span class="p">,</span> <span class="n">galmass</span><span class="p">)</span>
+
+<span class="n">fcs</span><span class="p">,</span> <span class="n">fc_zgrid</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">make_fcs</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">z_grism</span><span class="o">-</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">z_grism</span><span class="o">+</span><span class="mf">1e-3</span><span class="p">,</span>
+                              <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">,</span> <span class="n">filt_dir</span> <span class="o">=</span> <span class="n">filt_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 3/3 [00:00&lt;00:00,  5.37it/s]
+100%|██████████| 100/100 [03:26&lt;00:00,  2.07s/it]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Path exists. Saved atlas at : pregrids/test_atlas_100_Nparam_3.mat
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 4/4 [00:00&lt;00:00,  5.22it/s]
+</pre></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="All-right,-now-we’re-ready-to-do-the-joint-grism+photometry-fitting!">
+<h1>All right, now we’re ready to do the joint grism+photometry fitting!<a class="headerlink" href="#All-right,-now-we’re-ready-to-do-the-joint-grism+photometry-fitting!" title="Permalink to this headline">¶</a></h1>
+<p>Let’s let the emcee ensemble walker run for a while, and see how the posteriors look. For now, we choose 100 walkers, each of which takes 500 steps through the parameter space. To ensure that we don’t start off in weird portions of parameter space, we also let the ensemble ‘burn in’ for a few steps. This can be further scrutinized by checking to see if any of the walkers gets stuck in a small part of parameter space after the run and adjusting accordingly.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fit_type</span></code> controls whether the likelihood calculation step uses only the <code class="docutils literal notranslate"><span class="pre">grism</span></code> data (which tend to be poorer constraints on mass-sfr), or only the photometric SED (<code class="docutils literal notranslate"><span class="pre">phot</span></code>; which can poorly constrain the dust-metallicity posterior), or jointly fits both (<code class="docutils literal notranslate"><span class="pre">grismphot</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chi2wt</span></code> controls the relative weights of the spectroscopy and the photometry, and can be adjusted for a sample to optimally account for over- and under-estimated uncertainties on these quantities.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># the argument chi2wt weights the goodness-of-fit of the photometry relative to the grism.</span>
+<span class="c1"># acceptable inputs are any number between 0 and 1, with</span>
+<span class="c1"># only phot = 0.0</span>
+<span class="c1"># only grism = 1.0</span>
+
+<span class="n">n_steps</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">n_burnin</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">n_walkers</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">samples</span><span class="p">,</span> <span class="n">stelmass</span><span class="p">,</span> <span class="n">galmass</span> <span class="o">=</span> <span class="n">carbs</span><span class="o">.</span><span class="n">db_mcmc</span><span class="p">(</span><span class="n">mb</span><span class="p">,</span> <span class="n">galsed</span><span class="p">,</span> <span class="n">galerr</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">galsed</span><span class="p">,</span>
+                                           <span class="n">fcs</span><span class="p">,</span> <span class="n">fc_zgrid</span><span class="p">,</span> <span class="n">z_grism</span><span class="p">,</span> <span class="n">pg_params</span><span class="p">,</span>
+                                           <span class="n">fit_type</span> <span class="o">=</span> <span class="s1">&#39;grismphot&#39;</span><span class="p">,</span> <span class="n">chi2wt</span> <span class="o">=</span> <span class="mf">0.0001</span><span class="p">,</span>
+                                           <span class="n">n_steps</span> <span class="o">=</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">n_burnin</span> <span class="o">=</span> <span class="n">n_burnin</span><span class="p">,</span> <span class="n">n_walkers</span> <span class="o">=</span> <span class="n">n_walkers</span><span class="p">,</span>
+                                           <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">,</span> <span class="n">filt_dir</span> <span class="o">=</span> <span class="n">filt_dir</span><span class="p">)</span>
+
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+burn-in time: 13.0 sec
+[####################################################################################################]
+time taken to run: 53.5 min.
+chi2/DoF from grism: 0.99 and phot: 0.92.
+overall offset between median spec and grism: 0.828
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Plotting-all-the-posteriors-and-fits:">
+<h1>Plotting all the posteriors and fits:<a class="headerlink" href="#Plotting-all-the-posteriors-and-fits:" title="Permalink to this headline">¶</a></h1>
+<p>We now run <code class="docutils literal notranslate"><span class="pre">carbs.plot_all_fits()</span></code>, which makes four plots:</p>
+<ol class="arabic simple">
+<li><p>showing the fit to the photometry,</p></li>
+<li><p>using grizli’s <code class="docutils literal notranslate"><span class="pre">mb.oned_figure()</span></code> to show the fit to the full grism data,</p></li>
+<li><p>using <code class="docutils literal notranslate"><span class="pre">plot_emcee_posterior()</span></code> to create a plot of the posterior distributions for each parameter, and</p></li>
+<li><p>using dense_basis in <code class="docutils literal notranslate"><span class="pre">plot_sfh_posteriors()</span></code> to show the posterior distribution for the star formation history.</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">carbs</span><span class="o">.</span><span class="n">plot_all_fits</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">stelmass</span><span class="p">,</span> <span class="n">galmass</span><span class="p">,</span>
+                    <span class="n">mb</span><span class="p">,</span> <span class="n">z_grism</span><span class="p">,</span> <span class="n">fcs</span><span class="p">,</span> <span class="n">fc_zgrid</span><span class="p">,</span> <span class="n">galsed</span><span class="p">,</span> <span class="n">galerr</span> <span class="o">+</span> <span class="mf">0.03</span><span class="o">*</span><span class="n">galsed</span><span class="p">,</span>
+                    <span class="n">filter_list</span> <span class="o">=</span> <span class="n">filter_list</span><span class="p">,</span> <span class="n">filt_dir</span> <span class="o">=</span> <span class="n">filt_dir</span><span class="p">,</span> <span class="n">num_sfh</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">scaleto</span><span class="o">=</span><span class="s1">&#39;phot&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_0.png" src="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_1.png" src="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_2.png" src="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 1000/1000 [00:01&lt;00:00, 536.68it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_4.png" src="../_images/tutorials_CARBS_spectrophotometric_fitting_example_18_4.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="setting_up.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, CANUCS team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

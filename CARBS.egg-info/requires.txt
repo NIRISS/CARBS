@@ -1,0 +1,8 @@
+matplotlib
+numpy
+scipy
+george
+sklearn
+dense_basis
+grizli
+emcee
