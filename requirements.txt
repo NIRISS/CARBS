@@ -2,4 +2,3 @@ nbsphinx
 george
 corner
 emcee
-dense_basis

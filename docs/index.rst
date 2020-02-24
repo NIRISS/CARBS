@@ -12,7 +12,7 @@ CARBS: joint spectrophotometric fitting with dense_basis and grizli
    :maxdepth: 2
    :caption: Contents:
 
-   tutorials/setting_up.ipynb
+   tutorials/setting_up.rst
    tutorials/CARBS_spectrophotometric_fitting_example.ipynb
 
 Contribute
