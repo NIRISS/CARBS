@@ -3,4 +3,3 @@ george
 corner
 emcee
 dense_basis
-grizli
