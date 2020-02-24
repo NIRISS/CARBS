@@ -35,7 +35,9 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic routine for dense_basis + grizli spectrophotometric fitting." href="CARBS_spectrophotometric_fitting_example.html" />
+    <link rel="prev" title="CARBS: joint spectrophotometric fitting with dense_basis and grizli" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -79,16 +81,14 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Installation</a></li>
-<li><a class="reference internal" href="#Dependencies">Dependencies</a><ul>
-<li><a class="reference internal" href="#dense_basis-dependencies:">dense_basis dependencies:</a></li>
-<li><a class="reference internal" href="#grizli-dependencies:">grizli dependencies:</a></li>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CARBS_spectrophotometric_fitting_example.html">Basic routine for dense_basis + grizli spectrophotometric fitting.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CARBS_spectrophotometric_fitting_example.html#All-right,-now-we’re-ready-to-do-the-joint-grism+photometry-fitting!">All right, now we’re ready to do the joint grism+photometry fitting!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CARBS_spectrophotometric_fitting_example.html#Plotting-all-the-posteriors-and-fits:">Plotting all the posteriors and fits:</a></li>
 </ul>
-</li>
-</ul>
-</div>
+
             
           
         </div>
@@ -138,7 +138,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorials/setting_up.ipynb" rel="nofollow"> View page source</a>
+            <a href="../_sources/tutorials/setting_up.rst" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -175,30 +175,28 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="Installation">
-<h1>Installation<a class="headerlink" href="#Installation" title="Permalink to this headline">¶</a></h1>
-<p>Clone and install the repository using</p>
-git clone https://github.com/NIRISS/CARBS.git
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Clone and install the repository with:</p>
+<blockquote>
+<div><p>git clone <a class="reference external" href="https://github.com/NIRISS/CARBS.git">https://github.com/NIRISS/CARBS.git</a>
 cd CARBS
-python setup.py install</div>
-<div class="section" id="Dependencies">
-<h1>Dependencies<a class="headerlink" href="#Dependencies" title="Permalink to this headline">¶</a></h1>
+python setup.py install</p>
+</div></blockquote>
+<p># Dependencies</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://dense-basis.readthedocs.io/en/latest/">dense_basis</a></p></li>
-<li><p><a class="reference external" href="https://grizli.readthedocs.io/en/master/">grizli</a></p></li>
-<li><p><a class="reference external" href="https://emcee.readthedocs.io/en/stable/">emcee</a></p></li>
+<li><p>[dense_basis](<a class="reference external" href="https://dense-basis.readthedocs.io/en/latest/">https://dense-basis.readthedocs.io/en/latest/</a>)</p></li>
+<li><p>[grizli](<a class="reference external" href="https://grizli.readthedocs.io/en/master/">https://grizli.readthedocs.io/en/master/</a>)</p></li>
+<li><p>[emcee](<a class="reference external" href="https://emcee.readthedocs.io/en/stable/">https://emcee.readthedocs.io/en/stable/</a>)</p></li>
 </ul>
-<div class="section" id="dense_basis-dependencies:">
-<h2>dense_basis dependencies:<a class="headerlink" href="#dense_basis-dependencies:" title="Permalink to this headline">¶</a></h2>
+<p>## dense_basis dependencies:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/cconroy20/fsps">FSPS</a> and <a class="reference external" href="http://dfm.io/python-fsps/current/installation/">python-fsps</a> - needs .bashrc environmental variable.</p></li>
-<li><p>astropy, scikit-learn and george. See the full list <a class="reference external" href="https://dense-basis.readthedocs.io/en/latest/usage/dependencies.html">here</a>.</p></li>
+<li><p>[FSPS](<a class="reference external" href="https://github.com/cconroy20/fsps">https://github.com/cconroy20/fsps</a>) and [python-fsps](<a class="reference external" href="http://dfm.io/python-fsps/current/installation/">http://dfm.io/python-fsps/current/installation/</a>) - needs .bashrc environmental variable.</p></li>
+<li><p>astropy, scikit-learn and george. See the full list [here](<a class="reference external" href="https://dense-basis.readthedocs.io/en/latest/usage/dependencies.html">https://dense-basis.readthedocs.io/en/latest/usage/dependencies.html</a>).</p></li>
 </ul>
-</div>
-<div class="section" id="grizli-dependencies:">
-<h2>grizli dependencies:<a class="headerlink" href="#grizli-dependencies:" title="Permalink to this headline">¶</a></h2>
+<p>## grizli dependencies:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://grizli.readthedocs.io/en/master/grizli/install.html">installation instructions</a> / astroconda</p></li>
+<li><p>[installation instructions](<a class="reference external" href="https://grizli.readthedocs.io/en/master/grizli/install.html">https://grizli.readthedocs.io/en/master/grizli/install.html</a>) / astroconda</p></li>
 <li><p>psycopg2</p></li>
 <li><p>astropy&gt;=3.0</p></li>
 <li><p>scikit-image&gt;=0.13.0</p></li>
@@ -230,18 +228,18 @@ python setup.py install</div>
 <li><p>git+https://github.com/gbrammer/mastquery.git</p></li>
 </ul>
 <p>Put these lines in ~/.bashrc:</p>
-export SPS_HOME = "${HOME}/fsps/src" # or anywhere else
-export GRIZLI="${HOME}/grizli" # or anywhere else
-export iref="${GRIZLI}/iref/"  # for WFC3 calibration files
-export jref="${GRIZLI}/jref/"  # for ACS calibration files
-
-# Make the directories, assuming they don't already exist
+<blockquote>
+<div><p>export SPS_HOME = “${HOME}/fsps/src” # or anywhere else
+export GRIZLI=”${HOME}/grizli” # or anywhere else
+export iref=”${GRIZLI}/iref/”  # for WFC3 calibration files
+export jref=”${GRIZLI}/jref/”  # for ACS calibration files</p>
+<p># Make the directories, assuming they don’t already exist
 mkdir $GRIZLI
 mkdir $GRIZLI/CONF      # needed for grism configuration files
-mkdir $GRIZLI/templates # for redshift fits
-
-mkdir $iref
-mkdir $jref</div>
+mkdir $GRIZLI/templates # for redshift fits</p>
+<p>mkdir $iref
+mkdir $jref</p>
+</div></blockquote>
 </div>
 
 
@@ -249,6 +247,15 @@ mkdir $jref</div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="CARBS_spectrophotometric_fitting_example.html" class="btn btn-neutral float-right" title="Basic routine for dense_basis + grizli spectrophotometric fitting." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="CARBS: joint spectrophotometric fitting with dense_basis and grizli" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
